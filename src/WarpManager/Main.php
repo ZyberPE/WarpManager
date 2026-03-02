@@ -35,6 +35,10 @@ class Main extends PluginBase {
         return $msg;
     }
 
+    private function isOpOrHasPermission(Player $player, string $permission): bool {
+        return $player->hasPermission("warp.admin") || $player->hasPermission($permission);
+    }
+
     public function onCommand(CommandSender $sender, Command $command, string $label, array $args): bool {
 
         $cmd = strtolower($command->getName());
@@ -48,7 +52,7 @@ class Main extends PluginBase {
 
             case "setwarp":
 
-                if (!$sender->hasPermission("warp.admin")) {
+                if ($sender instanceof Player && !$sender->hasPermission("warp.admin")) {
                     $sender->sendMessage($this->getMessage("no-permission"));
                     return true;
                 }
@@ -60,7 +64,7 @@ class Main extends PluginBase {
 
                 $name = strtolower($args[0]);
 
-                $pos = $sender->getPosition();
+                $pos = ($sender instanceof Player) ? $sender->getPosition() : new Position(0, 64, 0, Server::getInstance()->getWorldManager()->getDefaultWorld());
 
                 $this->warps->set($name, [
                     "x" => $pos->getX(),
@@ -88,8 +92,7 @@ class Main extends PluginBase {
                     return true;
                 }
 
-                // OPs bypass warp permission check
-                if (!$sender->isOp() && !$sender->hasPermission("warp." . $name)) {
+                if ($sender instanceof Player && !$this->isOpOrHasPermission($sender, "warp." . $name)) {
                     $sender->sendMessage($this->getMessage("no-warp-permission"));
                     return true;
                 }
@@ -107,19 +110,21 @@ class Main extends PluginBase {
                     return true;
                 }
 
-                $sender->teleport(new Position(
-                    (float)$data["x"],
-                    (float)$data["y"],
-                    (float)$data["z"],
-                    $world
-                ));
+                if ($sender instanceof Player) {
+                    $sender->teleport(new Position(
+                        (float)$data["x"],
+                        (float)$data["y"],
+                        (float)$data["z"],
+                        $world
+                    ));
+                    $sender->sendMessage($this->getMessage("warp-teleported", ["warp" => $name]));
+                }
 
-                $sender->sendMessage($this->getMessage("warp-teleported", ["warp" => $name]));
                 return true;
 
             case "delwarp":
 
-                if (!$sender->hasPermission("warp.delete")) {
+                if ($sender instanceof Player && !$sender->hasPermission("warp.admin") && !$sender->hasPermission("warp.delete")) {
                     $sender->sendMessage($this->getMessage("no-permission"));
                     return true;
                 }
