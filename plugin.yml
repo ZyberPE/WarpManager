@@ -1,0 +1,34 @@
+name: WarpManager
+main: WarpManager\Main
+version: 1.0.0
+api: 5.0.0
+author: zyberpe
+
+permissions:
+  warp.admin:
+    default: op
+  warp.use:
+    default: true
+  warp.delete:
+    default: op
+
+commands:
+  setwarp:
+    description: Set a server warp
+    usage: "/setwarp <name>"
+    permission: warp.admin
+
+  warp:
+    description: Teleport to a warp
+    usage: "/warp <name>"
+    permission: warp.use
+
+  delwarp:
+    description: Delete a warp
+    usage: "/delwarp <name>"
+    permission: warp.delete
+
+  warps:
+    description: List all server warps
+    usage: "/warps"
+    permission: warp.use
