@@ -1,0 +1,15 @@
+messages:
+  no-permission: "§cYou do not have permission."
+  player-only: "§cThis command can only be used in-game."
+
+  usage-setwarp: "§cUsage: /setwarp <name>"
+  usage-warp: "§cUsage: /warp <name>"
+  usage-delwarp: "§cUsage: /delwarp <name>"
+
+  warp-set: "§aWarp '{warp}' has been created."
+  warp-deleted: "§aWarp '{warp}' has been deleted."
+  warp-not-found: "§cWarp '{warp}' does not exist."
+  warp-teleported: "§aTeleported to warp '{warp}'."
+  no-warp-permission: "§cYou do not have permission to access this warp."
+
+  warp-list: "§eAvailable Warps: {warps}"
