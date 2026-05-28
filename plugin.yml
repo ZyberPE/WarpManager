@@ -19,7 +19,7 @@ commands:
     permission: warp.admin
 
   warp:
-    description: Teleport to a warp
+    description: Teleport to a server warp
     usage: "/warp <name>"
     permission: warp.use
 
